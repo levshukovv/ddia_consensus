@@ -1,0 +1,128 @@
+{
+	"name": "DDIA Consensus Development (Python & C++)",
+	"image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04",
+	
+	// Features to add to the dev container
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"installOhMyZshConfig": true,
+			"username": "vscode",
+			"userUid": "automatic",
+			"userGid": "automatic"
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.11",
+			"installTools": true,
+			"installJupyterlab": true,
+			"configureGitLfsAndGitCredentialManager": true
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"version": "latest",
+			"moby": true
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"version": "latest"
+		},
+        "ghcr.io/devcontainers/features/cmake:1": {
+            "version": "3.22",
+            "installTools": true
+        },
+        "ghcr.io/devcontainers/features/cpp:1": {
+            "version": "latest",
+            "installTools": true,
+            "configureGitLfsAndGitCredentialManager": true
+        },
+        "ghcr.io/devcontainers-extra/features/zsh-plugins": {
+            "plugins": [
+                "zsh-users/zsh-autosuggestions",
+                "zsh-users/zsh-syntax-highlighting"
+            ],
+            "ohMyZshPlugins": [
+                "git",
+                "docker",
+                "python"
+            ]
+        }
+	},
+
+	// Configure tool-specific properties
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cmake-tools",
+				"ms-python.python",
+				"ms-python.debugpy",
+				"ms-python.pylint",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-vscode.vscode-json",
+				"redhat.vscode-yaml",
+				"ms-vscode.vscode-docker",
+				"ms-vscode.makefile-tools",
+				"streetsidesoftware.code-spell-checker",
+				"github.copilot",
+				"github.copilot-chat"
+			],
+			"settings": {
+				"C_Cpp.default.cppStandard": "c++17",
+				"C_Cpp.default.compilerPath": "/usr/bin/g++",
+				"C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+				"python.defaultInterpreterPath": "/usr/local/bin/python3",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": true,
+				"python.formatting.provider": "black",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.organizeImports": "explicit"
+				},
+				"terminal.integrated.defaultProfile.linux": "zsh",
+				"terminal.integrated.profiles.linux": {
+					"zsh": {
+						"path": "/bin/zsh",
+						"args": ["-l"]
+					}
+				}
+			}
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally
+	"forwardPorts": [
+		2379, // etcd client port
+		2380, // etcd peer port
+		8080, // common web service port
+		3000, // common frontend port
+		5000, // common API port
+		9090  // common metrics port
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
+	"remoteUser": "vscode",
+
+	// Set environment variables
+	"containerEnv": {
+		"CC": "/usr/bin/gcc",
+		"CXX": "/usr/bin/g++",
+		"CMAKE_BUILD_TYPE": "Debug"
+	},
+
+	// Mount the local file system
+	"mounts": [
+		"source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached"
+	],
+
+	// Configure container runtime arguments
+	"runArgs": [
+		"--privileged",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp:unconfined"
+	]
+}
