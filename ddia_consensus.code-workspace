@@ -1,0 +1,368 @@
+{
+	"folders": [
+		{
+			"name": "DDIA Consensus",
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.tabSize": 4,
+		"editor.insertSpaces": true,
+		"editor.detectIndentation": true,
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		},
+		"files.trimTrailingWhitespace": true,
+		"files.insertFinalNewline": true,
+		"files.trimFinalNewlines": true,
+		"terminal.integrated.defaultProfile.linux": "zsh",
+		"git.autofetch": true,
+		"git.confirmSync": false,
+		"git.enableSmartCommit": true,
+		"python.defaultInterpreterPath": "/usr/bin/python3",
+		"python.formatting.provider": "black",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true,
+		"python.testing.pytestEnabled": true,
+		"python.testing.unittestEnabled": false,
+		"C_Cpp.default.cStandard": "c17",
+		"C_Cpp.default.cppStandard": "c++17",
+		"C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+		"cmake.configureOnOpen": true,
+		"dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+		"dotnet.inlayHints.enableInlayHintsForParameters": true,
+		"dotnet.inlayHints.enableInlayHintsForLiteralParameters": true,
+		"dotnet.inlayHints.enableInlayHintsForIndexerParameters": true,
+		"dotnet.inlayHints.enableInlayHintsForObjectCreationParameters": true,
+		"dotnet.inlayHints.enableInlayHintsForOtherParameters": true,
+		"dotnet.inlayHints.suppressInlayHintsForParametersThatDifferOnlyBySuffix": true,
+		"dotnet.inlayHints.suppressInlayHintsForParametersThatMatchMethodIntent": true,
+		"dotnet.inlayHints.suppressInlayHintsForParametersThatMatchArgumentName": true
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-python.python",
+			"ms-python.pylint",
+			"ms-python.black-formatter",
+			"ms-vscode.cpptools",
+			"ms-vscode.cmake-tools",
+			"ms-dotnettools.csharp",
+			"ms-vscode.azure-cli-tools",
+			"ms-azuretools.vscode-docker",
+			"github.copilot",
+			"github.copilot-chat",
+			"redhat.vscode-yaml",
+			"ms-vscode.vscode-json",
+			"eamodio.gitlens",
+			"ms-vscode.test-adapter-converter",
+			"hbenl.vscode-test-explorer",
+			"formulahendry.code-runner",
+			"ms-vscode.hexeditor",
+			"ms-kubernetes-tools.vscode-kubernetes-tools",
+			"hashicorp.terraform"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "Build C++ Project",
+				"type": "shell",
+				"command": "make",
+				"args": [],
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				},
+				"problemMatcher": ["$gcc"],
+				"detail": "Build C++ consensus implementation using Makefile"
+			},
+			{
+				"label": "Clean and Rebuild",
+				"type": "shell",
+				"command": "make",
+				"args": ["rebuild"],
+				"group": "build",
+				"problemMatcher": ["$gcc"],
+				"detail": "Clean and rebuild the entire project"
+			},
+			{
+				"label": "Run C++ Program",
+				"type": "shell",
+				"command": "make",
+				"args": ["run"],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Build and run the consensus program"
+			},
+			{
+				"label": "Build with CMake",
+				"type": "shell",
+				"command": "cmake",
+				"args": [
+					"--build",
+					"${workspaceFolder}/build"
+				],
+				"group": "build",
+				"problemMatcher": ["$gcc"],
+				"detail": "Build project using CMake"
+			},
+			{
+				"label": "Configure CMake",
+				"type": "shell",
+				"command": "cmake",
+				"args": [
+					"-B",
+					"${workspaceFolder}/build",
+					"-S",
+					"${workspaceFolder}"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Configure CMake build system"
+			},
+			{
+				"label": "Run Python Tests",
+				"type": "shell",
+				"command": "python3",
+				"args": [
+					"-m",
+					"pytest",
+					"${workspaceFolder}/tests/",
+					"-v"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Run Python unit tests"
+			},
+			{
+				"label": "Run .NET Tests",
+				"type": "shell",
+				"command": "dotnet",
+				"args": [
+					"test",
+					"${workspaceFolder}"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Run .NET unit tests"
+			},
+			{
+				"label": "Format Code (Black)",
+				"type": "shell",
+				"command": "black",
+				"args": [
+					"${workspaceFolder}",
+					"--line-length=88"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Format Python code with Black"
+			},
+			{
+				"label": "Lint Python Code",
+				"type": "shell",
+				"command": "pylint",
+				"args": [
+					"${workspaceFolder}/**/*.py"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Lint Python code with pylint"
+			},
+			{
+				"label": "Run with Valgrind",
+				"type": "shell",
+				"command": "valgrind",
+				"args": [
+					"--tool=memcheck",
+					"--leak-check=full",
+					"--show-leak-kinds=all",
+					"${workspaceFolder}/build/consensus"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Run C++ binary with Valgrind memory checking"
+			},
+			{
+				"label": "Static Analysis (cppcheck)",
+				"type": "shell",
+				"command": "cppcheck",
+				"args": [
+					"--enable=all",
+					"--std=c++17",
+					"${workspaceFolder}/src/"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Run static analysis on C++ code"
+			},
+			{
+				"label": "Start etcd (Single Node)",
+				"type": "shell",
+				"command": "docker-compose",
+				"args": [
+					"-f",
+					"docker-compose.single.yml",
+					"up",
+					"-d"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Start single etcd node for development"
+			},
+			{
+				"label": "Start etcd Cluster",
+				"type": "shell",
+				"command": "docker-compose",
+				"args": [
+					"up",
+					"-d"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Start 3-node etcd cluster"
+			},
+			{
+				"label": "Stop etcd",
+				"type": "shell",
+				"command": "docker-compose",
+				"args": [
+					"down"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Stop etcd cluster"
+			},
+			{
+				"label": "Stop etcd (Single)",
+				"type": "shell",
+				"command": "docker-compose",
+				"args": [
+					"-f",
+					"docker-compose.single.yml",
+					"down"
+				],
+				"group": "build",
+				"problemMatcher": [],
+				"detail": "Stop single etcd node"
+			},
+			{
+				"label": "etcd Status",
+				"type": "shell",
+				"command": "docker",
+				"args": [
+					"exec",
+					"etcd-single",
+					"etcdctl",
+					"endpoint",
+					"health"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Check etcd health status"
+			},
+			{
+				"label": "etcd Put Test",
+				"type": "shell",
+				"command": "docker",
+				"args": [
+					"exec",
+					"etcd-single",
+					"etcdctl",
+					"put",
+					"test-key",
+					"test-value"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Test etcd with a simple put operation"
+			},
+			{
+				"label": "etcd Get Test",
+				"type": "shell",
+				"command": "docker",
+				"args": [
+					"exec",
+					"etcd-single",
+					"etcdctl",
+					"get",
+					"test-key"
+				],
+				"group": "test",
+				"problemMatcher": [],
+				"detail": "Test etcd with a simple get operation"
+			},
+			{
+				"label": "etcd Watch Demo",
+				"type": "shell",
+				"command": "docker",
+				"args": [
+					"exec",
+					"etcd-single",
+					"etcdctl",
+					"watch",
+					"leader/"
+				],
+				"group": "test",
+				"isBackground": true,
+				"problemMatcher": [],
+				"detail": "Watch for changes in leader election keys"
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Debug C++ Consensus",
+				"type": "cppdbg",
+				"request": "launch",
+				"program": "${workspaceFolder}/build/consensus",
+				"args": [],
+				"stopAtEntry": false,
+				"cwd": "${workspaceFolder}",
+				"environment": [],
+				"externalConsole": false,
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "Enable pretty-printing for gdb",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					}
+				],
+				"preLaunchTask": "Build C++ Project",
+				"miDebuggerPath": "/usr/bin/gdb"
+			},
+			{
+				"name": "Debug Python",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "${file}",
+				"console": "integratedTerminal",
+				"justMyCode": true
+			},
+			{
+				"name": "Debug .NET",
+				"type": "coreclr",
+				"request": "launch",
+				"program": "${workspaceFolder}/bin/Debug/net6.0/consensus.dll",
+				"args": [],
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"stopAtEntry": false,
+				"preLaunchTask": "build"
+			},
+			{
+				"name": "Attach to Process",
+				"type": "cppdbg",
+				"request": "attach",
+				"program": "${workspaceFolder}/build/consensus",
+				"MIMode": "gdb",
+				"miDebuggerPath": "/usr/bin/gdb"
+			}
+		]
+	}
+}
