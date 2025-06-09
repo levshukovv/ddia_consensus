@@ -9,22 +9,40 @@ LeaderElection::~LeaderElection()
 {
 }
 
-bool LeaderElection::startElection()
+bool LeaderElection::startElection(EtcdClient &etcd_client)
 {
-    // Implementation of leader election start logic
+
     return true;
 }
 
-bool LeaderElection::isLeader() const
+bool LeaderElection::isLeader(EtcdClient &etcd_client) const
 {
-    // Implementation to check if this node is the leader
-    return false;
+    auto current_leader = getCurrentLeader(etcd_client);
+    if (current_leader == nodeId)
+    {
+        return true; // This node is the leader
+    }
+    else if (current_leader.empty())
+    {
+        // No leader is currently elected
+        return false;
+    }
 }
 
-std::string LeaderElection::getCurrentLeader() const
+std::string LeaderElection::getCurrentLeader(EtcdClient &etcd_client) const
 {
     // Implementation to get the current leader ID
-    return "";
+    auto getResponse = etcd_client.get("/election/leader");
+    if (getResponse.success)
+    {
+        // Assuming the response data is the leader ID
+        return getResponse.data;
+    }
+    else
+    {
+        // Handle error or return empty string if no leader is found
+        return "";
+    }
 }
 
 void LeaderElection::stopElection()

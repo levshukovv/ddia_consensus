@@ -1,0 +1,8 @@
+build/*
+
+*.o
+*.so
+*.a
+*.dylib
+*.dll
+test_etcd

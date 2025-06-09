@@ -18,16 +18,6 @@ A C++ implementation of distributed leader election using etcd as the consensus 
 - **Docker** and **Docker Compose**
 - **Make** build system
 
-### Installing Dependencies
-
-```bash
-# Ubuntu/Debian
-sudo apt update
-sudo apt install build-essential libcurl4-openssl-dev docker.io docker-compose make
-
-# The dev container already includes all these dependencies
-```
-
 ## 🏗️ Project Structure
 
 ```
@@ -87,6 +77,7 @@ make run               # Equivalent to ./consensus
 ## 🔧 Available Commands
 
 ### Build Commands
+
 ```bash
 make                   # Build the project
 make clean             # Remove build artifacts
@@ -97,6 +88,7 @@ make memcheck          # Run with Valgrind memory checking
 ```
 
 ### etcd Management
+
 ```bash
 ./etcd.sh start        # Start single etcd node
 ./etcd.sh start-cluster # Start 3-node etcd cluster
@@ -158,6 +150,7 @@ The leader election implementation follows these principles:
 ### Common Issues
 
 **etcd Connection Failed**
+
 ```bash
 # Check if etcd is running
 ./etcd.sh status
@@ -170,6 +163,7 @@ The leader election implementation follows these principles:
 ```
 
 **Build Errors**
+
 ```bash
 # Check if libcurl is installed
 curl-config --version
@@ -179,6 +173,7 @@ sudo apt install libcurl4-openssl-dev
 ```
 
 **Docker Issues**
+
 ```bash
 # Check Docker status
 docker ps
@@ -191,6 +186,7 @@ docker system prune
 ## 🧪 Testing
 
 ### Unit Tests
+
 ```bash
 # Test etcd connectivity and operations
 ./test_etcd
@@ -200,6 +196,7 @@ docker system prune
 ```
 
 ### Memory Testing
+
 ```bash
 # Run with Valgrind
 make memcheck
@@ -209,6 +206,7 @@ make debug
 ```
 
 ### Load Testing
+
 ```bash
 # Start cluster for load testing
 ./etcd.sh start-cluster
@@ -262,6 +260,7 @@ This project is licensed under the terms specified in the LICENSE file.
 ## 🏗️ Development Notes
 
 This project was developed in a VS Code dev container with:
+
 - C++17 compiler toolchain
 - Docker and Docker Compose
 - libcurl for HTTP communication

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include "etcdClient.h"
 
 class LeaderElection
 {
@@ -15,13 +16,13 @@ public:
     ~LeaderElection();
 
     // Start the leader election process
-    bool startElection();
+    bool startElection(EtcdClient &etcd_client);
 
     // Check if this node is the current leader
-    bool isLeader() const;
+    bool isLeader(EtcdClient &etcd_client) const;
 
     // Get the current leader ID
-    std::string getCurrentLeader() const;
+    std::string getCurrentLeader(EtcdClient &etcd_client) const;
 
     // Stop the election process
     void stopElection();
